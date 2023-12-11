@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="center-column">
+    <div class="text-center">
+        <h1>{{ room.title }}</h1>
+
+        <h3>To Do</h3>
+
+        <form method="POST" action="{% url 'todolist' room_id=room.join_code %}" class="d-flex justify-content-center">
+        {% csrf_token %}
+        {{ form.title }}
+        <input class="btn btn-info" type="submit" name="Create Task">
+        </form>
+
+        
+        {% for task in tasks %}
+        <div class="item-row"> 
+            <a class="btn btn-sm btn-info" href="{% url 'updateTask' room_id=room.join_code pk=task.id %}" class="btn btn-secondary">Update</a>
+            <a class="btn btn-sm btn-danger" href="{% url 'delete' room_id=room.join_code pk=task.id %}" class="btn btn-secondary">Delete</a>
+
+            {% if task.complete == True %}
+            <strike>{{ task.title }}</strike>
+            {% else %}
+            <span>{{ task.title }}</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

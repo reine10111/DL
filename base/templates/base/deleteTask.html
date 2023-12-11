@@ -1,0 +1,8 @@
+<p> Are you suure you want to delete "{{item}}"?</p>
+
+<a href="{% url 'todolist' room_id=room.join_code %}"> Cancel </a>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="submit" name="Confirm">
+</form>

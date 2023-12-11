@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>DORM LIFE</title>
+</head>
+<body>
+    
+    <div class="container">
+        <i id="toggleSidebar" class="material-symbols-outlined custom-icon">
+            menu
+        </i>&nbsp;
+        <h1>DORMLIFE</h1>
+        
+        <div class="profile-menu">
+            <div class="profile-info">
+                <img src="C:\Users\maymay\OneDrive\Desktop\EME\image\profile.jpg" alt="Profile Avatar" id="profileImage">
+                <div class="text">Your Profile</div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="sidebar"> 
+            <div class="menu">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <i class="material-symbols-outlined">
+                                home_app_logo
+                            </i> &nbsp;
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-parent main-button">
+                        <span class="nav-trigger main-button" onclick="toggleNav(event, 'groupFinances')">
+                            <i class="material-symbols-outlined">
+                                business
+                            </i> &nbsp;
+                            <span>Group Finances</span>
+                        </span>
+                        <ul id="groupFinances">
+                            <li><a href="#">
+                                    <i class="material-symbols-outlined">
+                                        diversity_2
+                                    </i> &nbsp;
+                                    <span>Members</span>
+                                </a>
+                            </li>
+                            <li><a href="#">
+                                    <i class="material-symbols-outlined">
+                                        diversity_3
+                                    </i> &nbsp;
+                                    <span>Group Contributions</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="material-symbols-outlined">
+                                        receipt_long
+                                    </i> &nbsp;
+                                    <span>Bills</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="material-symbols-outlined">
+                                        quick_reference
+                                    </i> &nbsp;
+                                    <span>Due Dates</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="material-symbols-outlined">
+                                        campaign
+                                    </i> &nbsp;
+                                    <span>Announcements</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="material-symbols-outlined">
+                                        policy
+                                    </i> &nbsp;
+                                    <span>Dorm Policy</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="material-symbols-outlined">
+                                logout
+                            </i> &nbsp;
+                            <span>Log Out</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="material-symbols-outlined">
+                                info
+                            </i> &nbsp;
+                            <span>About Us</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="join-botton" onclick="showJoinDorm()">
+            <i class="material-symbols-outlined">add</i>
+            <div class="text">Join Dorm</div>
+    </div>
+    
+    <main class="main">
+        <div class="card">1</div>
+        <div class="card">2</div>
+        <div class="card">3</div>
+        <div class="card">4</div>
+        </div>
+    
+        <div class="card-body">
+        </div>
+    </main>
+    
+    <script>
+        function toggleNav(event, navId) {
+            var nav = document.getElementById(navId);
+            var mainButton = document.querySelector('.main-button');
+            var isSubButton = event.target.classList.contains('sub-button');
+            
+            // Check if the clicked button is the "Group Finances" button
+            var isGroupFinancesButton = event.target.classList.contains('nav-trigger') && event.target.classList.contains('main-button');
+            
+            mainButton.classList.toggle('active', !isSubButton);
+            mainButton.classList.toggle('hover', !isSubButton);
+
+            var subMenuItems = document.querySelectorAll('.nav-parent ul li');
+            subMenuItems.forEach(function(item) {
+                item.classList.toggle('active', !isSubButton && isGroupFinancesButton);
+            });
+
+            subMenuItems.forEach(function(item) {
+                item.classList.toggle('hover', !isSubButton && isGroupFinancesButton);
+            });
+
+            nav.style.display = nav.style.display === 'none' || nav.style.display === '' ? 'block' : 'none';
+        }
+
+        function showJoinDorm() {
+            var joinText = document.querySelector('.join-botton .text');
+            joinText.style.display = (joinText.style.display === 'none' || joinText.style.display === '') ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var profileImage = document.getElementById('profileImage');
+            var profileText = document.querySelector('.text');
+
+            profileImage.addEventListener('mouseover', function () {
+                profileText.style.display = 'block';
+            });
+
+            profileImage.addEventListener('mouseout', function () {
+                profileText.style.display = 'none';
+            });
+
+            var joinButton = document.querySelector('.join-botton');
+            var joinText = document.querySelector('.join-botton .text');
+
+            joinButton.addEventListener('mouseover', function () {
+                joinText.style.display = 'block';
+            });
+
+            joinButton.addEventListener('mouseout', function () {
+                joinText.style.display = 'none';
+            });
+
+            document.getElementById('toggleSidebar').addEventListener('click', function () {
+                var sidebar = document.getElementById('sidebar');
+                sidebar.style.display = (sidebar.style.display === 'none' || sidebar.style.display === '') ? 'flex' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

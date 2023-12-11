@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dorm Life</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/fillup.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="background">
+        <div>
+            <form method="POST" class="wrapper">
+                {% csrf_token %}
+                <h1 class="create-room">CREATE DORM <i class='bx bx-building-house'></i></h1>
+                
+                <div class="input-box">
+                    <input type="text" name="title" placeholder="Title" required>
+                    <i class='bx bx-rename'></i>
+                </div>
+                
+                <div class="input-box">
+                    <input type="text" name="description" placeholder="Description" required>
+                    <i class='bx bx-captions'></i>
+                </div>
+    
+                <button type="submit" class="btn">Create DORM</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

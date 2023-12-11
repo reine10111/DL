@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-8"> <!-- Increased the column width for better readability -->
+            <h1 class="text-center">{{ room.title }}</h1>
+            <div class="form-group text-center">
+                <p>Room Code: <br><b>{{ room.join_code }}</b></p>
+            </div>
+            <a href="{% url 'create_group_contrib' room_id=room.join_code %}" class="btn btn-sm btn-info mb-3">Create New Group Contribution</a>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Due Date</th>
+                    </tr>
+                </thead>
+                {% if contribs %}
+                    <tbody>
+                        {% for contrib in contribs %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ contrib.title }}</td>
+                                <td>{{ contrib.amount }}</td>
+                                <td>{{ contrib.due }}</td>                
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">No group contributions available for this room.</td>
+                    </tr>
+                {% endif %}                    
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

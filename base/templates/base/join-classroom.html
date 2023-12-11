@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+    <div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+        <div class="text-center">
+            <h1>Join Classroom</h1>
+            <form method="POST" class="wrapper">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="code" class="form-label">Code</label>
+                    <input type="text" class="form-control" id="code" name="code">
+                </div> 
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

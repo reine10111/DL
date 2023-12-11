@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.hero {
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('../images/BG-FRONT.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #000000;
+    padding: 10px 8%;
+    position: relative;
+}
+
+.hero-btn {
+    padding: 5px 40px;
+    background: linear-gradient(to right, #81039B, #FF0065);
+    border: 0;
+    outline: 0;
+    margin-right: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    top: 450px;
+    left: 50px; /* Adjust this value to move the button to the right */
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1.5;
+}
+
+
+nav {
+    position: fixed;
+    top: 0;
+    right: 0; /* Set the navigation to the right */
+    padding: 15px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align to the right */
+    z-index: 10;
+}
+
+nav img {
+    width: 80px;
+    margin-right: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    padding: 5px 15px;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 50px;
+    margin-left: 5px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+.nav-links a:hover {
+    background-color: #ED3A85;
+    cursor: pointer;
+}
+
+.nav-button {
+    display: inline-block;
+    padding: 8px 20px;
+    border: 2px solid #ED3A85;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #ED3A85; /* Set the button text color explicitly */
+    text-decoration: none;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.nav-button:hover {
+    background-color: #ED3A85;
+    cursor: pointer;
+}

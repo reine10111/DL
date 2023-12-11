@@ -1,0 +1,205 @@
+def view_member_bills(request, room_id, bills_slug):
+    room = Room.objects.get(join_code=room_id)
+    room_bills = bills.objects.get(room=room, slug=bills_slug)
+    role = ""
+
+    try:
+        ad = Admin.objects.get(room=room, user=request.user)
+        role = "admin"
+    except Admin.DoesNotExist:
+        mm = Member.objects.get(room=room, user=request.user)
+        role = "member"
+
+    if request.method == "POST":
+        submission_form = SubmissionForm(request.POST, request.FILES)
+
+        if submission_form.is_valid():
+            submission = submission_form.save(commit=False)
+            submission.user = request.user
+            submission.bills = room_bills
+            submission.save()
+
+            return redirect(f"/room/{room_id}/bills/{bills_slug}")
+        else:
+            # Handle form validation errors
+            return HttpResponseBadRequest("Form validation failed")
+
+    else:
+        submission = None
+        submission_form = SubmissionForm()
+
+        try:
+            submission = Submission.objects.get(user=request.user, bills=room_bills)
+            submission_form = SubmissionForm(instance=submission)
+        except Submission.DoesNotExist:
+            pass
+
+        if role == "member":
+            request.session["previous_room_code"] = room_id
+            request.session["previous_bills_slug"] = bills_slug
+            return render(request, "base/view-bills-member.html", {
+                "room_bills": room_bills,
+                "room": room,
+                "role": role,
+                "submission": submission,
+                "submission_form": submission_form,
+            })
+        else:
+            submissions = Submission.objects.filter(bills=room_bills)
+            submitted_member = [sub.user for sub in submissions]
+            all_members = [mm.user for mm in Member.objects.filter(room=room)]
+            did_not_submit = []
+
+            for mem in all_members:
+                if mem not in submitted_member:
+                    did_not_submit.append(mem)
+
+            return render(request, "base/view-bill-admin.html", {
+                "room_bills": room_bills,
+                "room": room,
+                "submissions": submissions,
+                "did_not_submit": did_not_submit,
+            })
+            {% extends "base/room_home.html" %}
+
+            {% block content %}
+            
+            <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+                <div class="text-center">
+                    <h1>{{ room_bills.title }}</h1>
+                    <p>Due: {{ room_bills.due }}</p>
+            
+                    <div class="col-3">
+                        <h3>Paid Members: </h3>
+                        <ul>
+                            {% for submission in submissions %}
+                                <li>
+                                    <a href="proof/{{ submission.user.id }}" target="_blank">{{ submission.user.username }}</a>
+                                    {% if submission %}
+                                    <form method="post" action="{% url 'change-status' room_join_code=room.join_code bill_slug=bills.slug submission_id=submission.id %}">
+            
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <input type="submit" value="Change Status">
+                                    </form>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-3">
+                        <h3>Did not pay members: </h3>
+                        <ul>
+                            {% for user in did_not_submit %}
+                                <li>{{ user.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            {% endblock %}
+
+            def change_status(request, room_id, bills_slug):
+            submission = get_object_or_404(Submission, user=request.user)
+        
+            if request.method == 'POST':
+                form = ChangeStatusForm(request.POST)
+        
+                if form.is_valid():
+                    new_status = form.cleaned_data['status']
+                    submission.status = new_status
+                    submission.save()
+                    room_id = request.GET.get('room_id', '')
+                    bills_slug = request.GET.get('bills_slug', '')
+                    return HttpResponseRedirect(request.META.get('HTTP_REFERER', f'/room/{{ room_join.code }}/bills/{{ bills.slug }}/status/'))
+            else:
+                form = ChangeStatusForm(initial={'status': submission.status})
+        
+            return render(request, 'base/view-bill-admin.html', {'form': form, 'submission': submission})
+
+            class ChangeStatusForm(forms.ModelForm):
+            class Meta:
+                model = Submission
+                fields = ['status']
+        
+def remark_proof_api(request, room_id, bills_slug):
+    if request.method == "POST":
+        data = json.loads(request.body.decode("utf-8"))
+
+        submission_id = data["subId"]
+        status = data["status"]
+
+        sub = Submission.objects.get(id=int(submission_id))
+        sub.status = status
+        sub.save()
+
+        return JsonResponse({"success": True})
+
+        {% extends "base/room_home.html" %}
+
+        {% block content %}
+        
+        <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+            <div class="text-center">
+                <h1>{{ room_bills.title }}</h1>
+                <p>Due: {{ room_bills.due }}</p>
+        
+                <div class="col-3">
+                    <h3>Paid Members: </h3>
+                    <ul>
+                        {% for submission in submissions %}
+                            <li>
+                                <a href="proof/{{ submission.user.id }}" target="_blank">{{ submission.user.username }}</a>
+                                {% if submission %}
+                                    <form class="statusForm" data-subid="{{ submission.id }}">
+                                        {% csrf_token %}
+                                        <select name="status">
+                                            <option value="P" {% if submission.status == 'P' %}selected{% endif %}>Pending</option>
+                                            <option value="A" {% if submission.status == 'A' %}selected{% endif %}>Accepted</option>
+                                            <option value="R" {% if submission.status == 'R' %}selected{% endif %}>Rejected</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </form>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-3">
+                    <h3>Did not pay members: </h3>
+                    <ul>
+                        {% for user in did_not_submit %}
+                            <li>{{ user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.querySelectorAll('.statusForm').forEach(form => {
+                form.addEventListener('submit', e => {
+                    e.preventDefault();
+                    
+                    const data = {
+                        subId: form.getAttribute('data-subid'),
+                        status: form.querySelector('[name="status"]').value
+                    };
+                    
+                    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    
+                    fetch(`status`, {
+                        method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken
+                        },
+                        body: JSON.stringify(data)  
+                    });
+        
+                });
+            });
+        </script>
+        {% endblock %}
+        
+

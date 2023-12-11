@@ -1,0 +1,45 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h1>User Profile for {{ room.name }}</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        {% if form.instance.profileimg %}
+          <img src="{{ form.instance.profileimg.url }}" alt="{{ form.instance.user.username }}'s Profile Image" class="img-thumbnail">
+        {% endif %}
+        {{ form.profileimg.label_tag }}
+        {{ form.profileimg }}
+      </div>
+      <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      <div class="form-group">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+      </div>
+      <div class="form-group">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+      </div>
+      <div class="form-group">
+        {{ form.bio.label_tag }}
+        {{ form.bio }}
+      </div>
+
+      {% if is_owner_or_user %}
+        <button type="submit" class="btn btn-primary">Save Profile</button>
+      {% endif %}
+    </form>
+  </div>
+
+  <script>
+    // Trigger file input when the image is clicked
+    document.querySelector('img').addEventListener('click', function() {
+      document.querySelector('input[type="file"]').click();
+    });
+  </script>
+{% endblock %}

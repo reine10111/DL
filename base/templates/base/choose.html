@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <tittle>Django File Upload</tittle>
+    </head>
+    <body>
+        <form action="{% url 'room/{{ room_id }/bill}' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+        <p>
+            {{ models.files }}
+        </p>
+        <p><input type="submit" value="Upload" /></p>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+  <div style="text-align: center; margin: auto; max-width: 600px; padding: 20px;">
+    {% csrf_token %}
+
+    <h1>{{ latest_announcement.title }}</h1>
+    <p>{{ latest_announcement.body }}</p>
+    <p>Author: {{ latest_announcement.author.username }}</p>
+    <p>Created on: {{ latest_announcement.created_on }}</p>
+
+    {% for comment in comments %}
+      <p>{{ comment.author.username }}: {{ comment.comment }}</p>
+    {% endfor %}
+
+    <form method="post" action="{% url 'create_comment' room_id=room.join_code announcement_id=latest_announcement.id %}">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit">Submit Comment</button>
+    </form>
+
+    <a style="display: block; text-align: center; margin-top: 10px;" class="btn btn-sm btn-info" href="{% url 'create_announcement' room_id=room.join_code %}" class="btn btn-secondary">Create</a>
+  </div>
+{% endblock %}

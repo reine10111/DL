@@ -1,0 +1,55 @@
+{% extends "base/room_home.html" %}
+
+{% block content %}
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="text-center">
+        <h1>{{ room_bills.title }}</h1>
+        <p>Due: {{ room_bills.due }}</p>
+        {% if submission.status != 'P' %}
+            <h3>Status: {{ submission.status }}</h3>
+        {% else %}
+            <h3>No Confirmation Yet</h3>
+        {% endif %}
+    
+        {% if role == "member" %}
+            <h2>Magbayad ka!</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}  
+            
+                {% if submission %}
+                    <div class="mb-3" id="unsubmit">
+                        {{ submission_form.as_p }}
+                        <button type="button" id="submitBtn" class="btn btn-primary">Unsubmit</button>
+                        <p>Note: When you click on the unsubmit button, this submission will be deleted. This action is irreversible.</p>
+                    </div>
+                    <div class="mb-3" id="submitForm" style="display: none">
+                        <input type="file" name="proof" multiple>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                {% else %}
+                    <div class="mb-3">
+                        <input type="file" name="proof" multiple>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                {% endif %}
+            
+                {% for sub in submissions %}
+                    <p>
+                        <b>{{ sub.status }}</b>
+                        {{ sub.user.username }}
+                    </p>
+                {% endfor %}
+            </form>
+            
+        <script>
+            document.getElementById("submitBtn").onclick = () => {
+                document.getElementById("submitForm").style = "";
+                document.getElementById("unsubmit").style = "display: none";
+            };
+        </script>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

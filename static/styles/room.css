@@ -1,0 +1,105 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #0B001A;
+    height: 100%;
+    width: 260px;
+}
+
+.sidebar .logo-details{
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .logo-details img {
+    font-size: 30px;
+    color: #fff;
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px; 
+}
+
+
+.sidebar .logo-details .logo_name{
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+    
+}
+
+
+.sidebar .nav-links{
+    height: 100%;
+    padding-top: 30px;
+
+}
+
+.sidebar .nav_links li{
+    position: relative;
+    list-style: none;
+    transition: all 0.4s ease;
+}
+
+.sidebar .nav_links li .iocn-link{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar .nav_links li i{
+    height: 50px;
+    min-width: 78px;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+    font-size: 20px;
+}
+
+.sidebar .nav_links li a{
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.sidebar .nav_links li a .link_name{
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+}
+
+.sidebar .nav_links li a .sub-menu{
+    padding: 6px 8px 14px 80px;
+    margin-top: -10px;
+    /* display: none; */
+}
+
+.sidebar .nav_links li .sub-menu a{
+    color: #fff;
+    font-size: 15px;
+    padding: 5px 0;
+    white-space: nowrap;
+}
+
+.sidebar .nav-links li:hover{
+    background: #1d1b31;
+}
+
+.sidebar.open .nav_links li .sub-menu{
+    position: absolute;
+    left:100%;
+    top: 0;
+    margin-top: 0;
+    padding: 10px 20px;
+}

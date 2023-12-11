@@ -1,0 +1,62 @@
+<div class="sidebar">
+    <div class="side-bar-brand">
+        <h1><img src="../static/images/LOGO.png" alt="DormLife logo">DormLife</h1>
+    </div>
+  
+    <div class="sidebar-menu">
+        <ul>
+            <li>
+                <a href="{% url 'dashboard' room_id=room.join_code %}"><span class="material-symbols-outlined"> dashboard </span>
+                <span>Dashboard</span></a>
+            </li>
+  
+            <li>
+                <a href="#"><span class="material-symbols-outlined"> account_circle </span>    
+                <span>Profile</span></a>
+            </li>
+  
+            <li>
+                <a href="{% url 'members' room_id=room.join_code %}"><span class="material-symbols-outlined">groups</span>   
+                <span>Members</span></a>
+            </li>
+  
+            <li>
+                <a href="{% url 'todolist' room_id=room.join_code %}"><span class="material-symbols-outlined"> table_view </span> 
+                <span>To Do</span></a>
+            </li>
+  
+            <li>
+                <a href="{% url 'view-bills' room_id=room.join_code %}">
+                <span class="material-symbols-outlined">payments</span>
+                <span>Bills</span>
+                </a>
+            </li>
+  
+            <li>
+                <a href="{% url 'calendar' room_id=room.join_code %}"><span class="material-symbols-outlined"> today </span>   
+                <span>Calendar</span></a>
+            </li>
+  
+            <li>
+                <a href="#"><span class="material-symbols-outlined"> forum </span>   
+                <span>Messages</span></a>
+            </li>
+  
+            <li>
+                <a href="{% url 'announcement' room_id=room.join_code %}"><span class="material-symbols-outlined"> campaign </span> 
+                <span>Announcement</span></a>
+            </li>
+  
+            <li>
+                <a href="{% url 'groupcontrib' room_id=room.join_code %}"><span class="material-symbols-outlined"> settings </span>  
+                <span>Group Contribution</span></a>
+            </li>
+  
+            <li>
+                <a href=""><span class="material-symbols-outlined"> logout </span> 
+                <span>Sign Out</span></a>
+            </li>
+        </ul>
+    </div>
+  </div>
+  

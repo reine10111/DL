@@ -1,0 +1,45 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="height: 100vh;">
+            <div class="col-md-6">
+                <h1 class="text-center">{{ room.title }}</h1>
+                <div class="form-group text-center">
+                    <p>Room Code: <br><b>{{ room.join_code }}</b></p>
+                </div>
+                <a href="{% url 'post-bills' room_id=room.join_code %}">
+                    <button type="button" class="btn btn-primary btn-lg">Add Bills</button>
+                </a>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Due Date</th>
+                            <th scope="col">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bill in bills %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="/room/{{ room.join_code }}/bills/{{ bill.slug }}">{{ bill.title }}</a></td>
+                                <td>{{ bill.amount }}</td>
+                                <td>{{ bill.due }}</td>
+                                <td>
+
+
+                                </td>
+                                
+                            </tr>
+                            
+                        {% endfor %}
+                    </tbody>                    
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

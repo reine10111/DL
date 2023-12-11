@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center">{{ room.title }} - Completion Status</h1>
+
+        <h3>Members who have completed the bill:</h3>
+        <ul>
+            {% for bill in room_bills %}
+                {% if bill.remarks_member %}
+                    <li>{{ bill.amount.username }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        <h3>Members who have not completed the bill:</h3>
+        <ul>
+            {% for bill in room_bills %}
+                {% if not bill.remarks_member %}
+                    <li>{{ bill.amount.username }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

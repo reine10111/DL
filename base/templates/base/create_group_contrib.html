@@ -1,0 +1,46 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h1>Create Group Contribution for {{ room.name }}</h1>
+
+    <form method="post" action="{% url 'create_group_contrib' room_id=room.join_code %}">
+      {% csrf_token %}
+
+      <div class="row">
+        <div class="col-md-6">
+          {{ form.non_field_errors }}
+
+          <div class="form-group">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+          </div>
+
+          <div class="form-group">
+            {{ form.amount.label_tag }}
+            {{ form.amount }}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.due.id_for_label }}" class="form-label">{{ form.due.label }}</label>
+            <input type="datetime-local" id="{{ form.due.id_for_label }}" class="form-control" name="{{ form.due.name }}" value="{{ form.due.value|default:'' }}" {% if form.due.required %}required{% endif %}>
+            {{ form.due.errors }}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            {{ form.selected_user_ids.label_tag }}
+            {{ form.selected_user_ids }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary">Create Contribution</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

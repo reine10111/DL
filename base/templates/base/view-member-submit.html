@@ -1,0 +1,15 @@
+{% extends "base/room_home.html" %}
+
+{% block content %}
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="text-center">
+            <h1>{{ room.title }}</h1>
+            <h2>{{ room_bills.title }}</h2>
+            <h3>Member: {{ member.first_name }} {{ member.last_name }}</h3>
+            <h4>Member's Proof</h4>
+            <div style="width: 50%;">
+                <a href="{{ submission.proof.url }}" target="_blank">{{ submission.proof.name }}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
