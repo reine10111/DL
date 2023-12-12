@@ -2,9 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages  
+from django.contrib import messages
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login
+
 
 # Create your views here.
 
@@ -24,7 +25,7 @@ def register(request):
 
     return render(request, "base/register.html", {"form": form})
 
-    
+
 def login_view(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -40,23 +41,27 @@ def login_view(request):
 
     return render(request, "base/login.html")
 
+
 def logout_view(request):
     logout(request)
     return redirect("base/login/")
+
 
 from .models import Admin, Room, Member
 from helpers import random_str
 from itertools import chain
 
+
 def view_all_rooms(request):
     if request.user.is_authenticated:
-        r = Member.objects.filter(user=request.user)  
+        r = Member.objects.filter(user=request.user)
         a = Admin.objects.filter(user=request.user)
         rooms = list(chain(r, a))
         return render(request, "base/home.html", {"rooms": rooms})
     else:
         # Handle the case where the user is not authenticated, redirect to login for example
         return redirect('login')  # Update 'login' to your actual login URL
+
 
 def create_room(request):
     if request.method == "POST":
@@ -65,13 +70,14 @@ def create_room(request):
         join_code = random_str()
         room = Room.objects.create(title=title, description=description, owner=request.user, join_code=join_code)
         Admin.objects.create(user=request.user, room=room)
-        
+
         return redirect('dashboard', room_id=room.join_code)
     elif request.user.is_authenticated:
         return render(request, "base/createroom.html")
     else:
         return redirect('login')
-    
+
+
 def join_room(request):
     if request.method == "POST":
         code = request.POST["code"]
@@ -82,9 +88,10 @@ def join_room(request):
 
         Member.objects.create(user=request.user, room=room)
         return redirect(f"/room/{code}/")
-        
+
     else:
         return render(request, "base/join-classroom.html")
+
 
 from .models import Room, bills, Admin, Member, Submission, Events, Task
 from django.shortcuts import render, redirect, get_object_or_404
@@ -99,6 +106,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import MemberForm, AdminForm
 from .models import Member, Admin
+
 
 def home(request, room_id):
     return render(request, "base/dashboard.html", {
@@ -121,7 +129,7 @@ def post_bills(request, room_id):
     else:
         return render(request, "base/post-bills.html", {"room": room})
 
-    
+
 @csrf_exempt
 def delete_submission_api(request, room_id, bills_slug):
     if request.method == "POST":
@@ -140,18 +148,19 @@ def delete_submission_api(request, room_id, bills_slug):
 
 
 def view_submitted_proof(request, room_id, bills_slug, mem_id):
-    room =  Room.objects.get(join_code=room_id)
+    room = Room.objects.get(join_code=room_id)
     room_bills = bills.objects.get(room=room, slug=bills_slug)
     user = User.objects.get(id=mem_id)
-    
-    submission = Submission.objects.get(user=user, bills=room_bills )
-    
+
+    submission = Submission.objects.get(user=user, bills=room_bills)
+
     return render(request, "base/view-member-submit.html", {
         "room": room,
         "room_bills": room_bills,
         "member": user,
         "submission": submission
     })
+
 
 from django.http import HttpResponseBadRequest
 
@@ -203,6 +212,7 @@ def view_member_bills(request, room_id, bills_slug):
                 "did_not_submit": did_not_submit,
             })
 
+
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from .models import Room, bills, Admin, Submission
@@ -211,6 +221,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from django.utils import timezone
+
 
 @csrf_exempt
 def view_bills(request, room_id):
@@ -231,9 +242,8 @@ from .models import Task
 from .forms import TaskForm
 from django.shortcuts import redirect
 
+
 @csrf_exempt
-
-
 def to_do_list(request, room_id):
     room = get_object_or_404(Room, join_code=room_id)
     user = request.user
@@ -269,24 +279,23 @@ def updateTask(request, room_id, pk):
             form.save()
         return redirect('todolist', room_id=room.join_code)
 
-
-
-
     context = {'form': form}
     return render(request, 'base/update_task.html', context)
 
-def deleteTask(request,room_id, pk):
+
+def deleteTask(request, room_id, pk):
     room = get_object_or_404(Room, join_code=room_id)
-    item =  Task.objects.get(id=pk)
+    item = Task.objects.get(id=pk)
 
     if request.method == 'POST':
         item.delete()
         return redirect('todolist', room_id=room.join_code)
     context = {
-        'item':item,
-        'room':room
-        }
+        'item': item,
+        'room': room
+    }
     return render(request, 'base/deleteTask.html', context)
+
 
 def calendar(request, room_id):
     room = get_object_or_404(Room, join_code=room_id)
@@ -297,22 +306,24 @@ def calendar(request, room_id):
     }
     return render(request, 'base/calendar.html', context)
 
-def all_events(request, room_id): 
-    room = Room.objects.get(join_code=room_id)                                                                                                
-    all_events = Events.objects.all()                                                                                    
-    out = []                                                                                                             
-    for event in all_events:                                                                                             
+
+def all_events(request, room_id):
+    room = Room.objects.get(join_code=room_id)
+    all_events = Events.objects.all()
+    out = []
+    for event in all_events:
         out.append({
-            'title': event.name,                                                                                         
-            'id': event.id,                                                                                              
+            'title': event.name,
+            'id': event.id,
             'start': event.start.strftime("%Y-%m-%d %H:%M:%S"),  # Fix the date format
-            'end': event.end.strftime("%Y-%m-%d %H:%M:%S"),                                                           
-        })                                                                                                               
-                                                                                                                      
-    return JsonResponse(out, safe=False) 
- 
+            'end': event.end.strftime("%Y-%m-%d %H:%M:%S"),
+        })
+
+    return JsonResponse(out, safe=False)
+
+
 def add_event(request, room_id):
-    room = Room.objects.get(join_code=room_id)       
+    room = Room.objects.get(join_code=room_id)
     if request.method == "GET":
         start = request.GET.get("start", None)
         end = request.GET.get("end", None)
@@ -321,10 +332,11 @@ def add_event(request, room_id):
         event.save()
         data = {}
     return JsonResponse(data, {"room": room})
- 
+
+
 def update(request, room_id):
-    room = Room.objects.get(join_code=room_id) 
-    if request.method == "GET":      
+    room = Room.objects.get(join_code=room_id)
+    if request.method == "GET":
         start = request.GET.get("start", None)
         end = request.GET.get("end", None)
         title = request.GET.get("title", None)
@@ -336,9 +348,10 @@ def update(request, room_id):
         event.save()
         data = {}
     return JsonResponse(data, {"room": room})
- 
+
+
 def remove(request, room_id):
-    room = Room.objects.get(join_code=room_id)        
+    room = Room.objects.get(join_code=room_id)
     id = request.GET.get("id", None)
     event = Events.objects.get(id=id)
     event.delete()
@@ -351,6 +364,7 @@ def remove(request, room_id):
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Announcement, Comment
 from .forms import AnnouncementForm, CommentForm
+
 
 # views.py
 @csrf_exempt
@@ -393,13 +407,40 @@ def announcement_detail(request, room_id):
         'comments': comments,
     })
 
+
 from django.http import HttpResponseForbidden
 
+
 def create_announcement(request, room_id):
-    pass
+    room = Room.objects.get(join_code=room_id)
+
+    if not (request.user.is_authenticated and request.user.admin_set.filter(room=room).exists()):
+        return HttpResponseForbidden("You do not have permission to create an announcement.")
+
+    if request.method == 'POST':
+        announcement_form = AnnouncementForm(request.POST)
+
+        if announcement_form.is_valid():
+            new_announcement = announcement_form.save(commit=False)
+
+            # Assuming your Admin model has a 'user' field
+            admin_user = request.user.admin_set.get(room=room)
+            new_announcement.author = admin_user
+
+            new_announcement.room = room
+            new_announcement.save()
+
+            return redirect('announcement', room_id=room_id)
+
+    return render(request, 'base/create_announcement.html', {
+        'announcement_form': AnnouncementForm(),
+        'room': room,
+    })
+
 
 from django.urls import reverse
 from django.shortcuts import redirect
+
 
 def create_comment(request, room_id, announcement_id):
     room = Room.objects.get(join_code=room_id)
@@ -409,7 +450,7 @@ def create_comment(request, room_id, announcement_id):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
-            
+
             # Check if the user is authenticated
             if request.user.is_authenticated:
                 new_comment.author = request.user
@@ -434,6 +475,7 @@ from .forms import GroupContribForm
 from django.shortcuts import render, get_object_or_404
 from .models import Room, GroupContrib
 
+
 # views.py
 
 @csrf_exempt
@@ -450,6 +492,7 @@ def group_contrib_view(request, room_id):
         'contribs': contribs,
         'room': room,
     })
+
 
 def create_group_contrib(request, room_id):
     room = get_object_or_404(Room, join_code=room_id)
@@ -484,11 +527,10 @@ def create_group_contrib(request, room_id):
         'room': room,
     })
 
-    
 
 def dashboard(request, room_id):
     room = Room.objects.get(join_code=room_id)
-    
+
     context = {
         "room": room,
     }
@@ -497,15 +539,17 @@ def dashboard(request, room_id):
 
 def members(request, room_id):
     room = Room.objects.get(join_code=room_id)
-    
+
     context = {
         "room": room,
     }
     return render(request, "base/member.html", context)
-    
+
+
 # views.py
 
 from django.http import HttpResponseForbidden
+
 
 @login_required
 @csrf_exempt
@@ -554,10 +598,13 @@ def profile_view(request, room_id, user_id):
         'is_owner_or_user': is_owner_or_user,
     })
 
-def services (request):
-    return render(request,  'base/services.html')
 
-def aboutus (request):
-    return render(request,  'base/aboutus.html')
-#transferadmin
-#leavedorm
+def aboutus(request):
+    return render(request, 'base/aboutus.html')
+
+
+def services(request):
+    return render(request, 'base/services.html')
+
+# transferadmin
+# leavedorm
