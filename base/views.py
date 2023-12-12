@@ -101,7 +101,7 @@ from .forms import MemberForm, AdminForm
 from .models import Member, Admin
 
 def home(request, room_id):
-    return render(request, "base/room_home.html", {
+    return render(request, "base/dashboard.html", {
         "room": Room.objects.get(join_code=room_id)
     })
 
@@ -396,31 +396,7 @@ def announcement_detail(request, room_id):
 from django.http import HttpResponseForbidden
 
 def create_announcement(request, room_id):
-    room = Room.objects.get(join_code=room_id)
-
-    if not (request.user.is_authenticated and request.user.admin_set.filter(room=room).exists()):
-        return HttpResponseForbidden("You do not have permission to create an announcement.")
-
-    if request.method == 'POST':
-        announcement_form = AnnouncementForm(request.POST)
-
-        if announcement_form.is_valid():
-            new_announcement = announcement_form.save(commit=False)
-
-            # Assuming your Admin model has a 'user' field
-            admin_user = request.user.admin_set.get(room=room)
-            new_announcement.author = admin_user
-
-            new_announcement.room = room
-            new_announcement.save()
-
-            return redirect('announcement', room_id=room_id)
-
-    return render(request, 'base/create_announcement.html', {
-        'announcement_form': AnnouncementForm(),
-        'room': room,
-    })
-
+    pass
 
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -578,7 +554,10 @@ def profile_view(request, room_id, user_id):
         'is_owner_or_user': is_owner_or_user,
     })
 
+def services (request):
+    return render(request,  'base/services.html')
 
-
+def aboutus (request):
+    return render(request,  'base/aboutus.html')
 #transferadmin
 #leavedorm

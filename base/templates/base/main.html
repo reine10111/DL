@@ -18,9 +18,8 @@
         <nav>
             <div class="nav-links">
                 <ul>
-                    <li><a href="{#}">HOME</a></li>
-                    <li><a href="{#}">ABOUT US</a></li>
-                    <li><a href="{#}">SERVICES</a></li>
+                    <li><a href="{% url 'aboutus' %}">ABOUT US</a></li>
+                    <li><a href="{% url 'services' %}">SERVICES</a></li>
                     <li><a href="{% url 'login' %}" class="nav-button">LOG IN</a></li>
                 </ul>
             </div>
