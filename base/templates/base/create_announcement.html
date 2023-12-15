@@ -1,12 +1,19 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-  <div style="text-align: center; margin: auto;">
-    <h3>Create an Announcement</h3>
-    <form method="post" action="{% url 'create_announcement' room_id=room.join_code %}">
-      {% csrf_token %}
-      {{ announcement_form.as_p }}
-      <button type="submit">Create Announcement</button>
-    </form>
+  <div class="container-cA d-flex justify-content-center align-items-center vh-100">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="form-group custom-form text-center"> <!-- Apply the custom-form class here -->
+          <h1 class="mb-4">Create an Announcement</h1>
+          <form method="post" action="{% url 'create_announcement' room_id=room.join_code %}" class="px-3">
+            {% csrf_token %}
+            {{ announcement_form.as_p }}
+
+            <button type="submit" class="btn btn-primary mt-3">Create Announcement</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="content-wrapper">
+    <div class="container-ann">
+      <h1>{{ announcement.title }}</h1>
+      <h2>{{ announcement.created_on }}</h2>
+      <h3>{{ announcement.author.username }}</h3>
+    </div>
+
+    <div class="container-ann2">
+      <p>{{ announcement.body }}</p>
+
+      <h3>Add a Comment</h3>
+      <form method="post" action="{% url 'create_comment' room_id=room.join_code announcement_id=announcement.id %}">
+          {% csrf_token %}
+        <div class="comment-form">
+          {{ comment_form.as_p }}
+        </div>
+          <button type="submit">Submit Comment</button>
+      </form>
+    </div>
+
+    <div class="container-ann3">
+      <h3>Comments</h3>
+      <ul>
+        {% for comment in comments %}
+          <li><strong>{{ comment.author.username }}:</strong> {{ comment.comment }}</li>
+        {% empty %}
+          <li>No comments yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -14,40 +14,18 @@
 </head>
 <body>
 <div class="background">
-
-    <form class="wrapper" method="post" action="{% url 'register' %}">
-        {% csrf_token %}
-        <h1 class="signup-heading">SIGN UP</h1>
-        <div class="input-box">
-            <input type="text" name="username" placeholder="First Name" required>
-            <i class='bx bxs-user'></i>
-        </div>
-        <div class="input-box">
-            <input type="text" name="username" placeholder="Last Name" required>
-            <i class='bx bxs-user'></i>
-        </div>
-        <div class="input-box">
-            <input type="text" name="email" placeholder="Email Address" required>
-            <i class='bx bx-envelope'></i>
-        </div>
-        <div class="input-box">
-            <input type="password" name="password1" placeholder="Password" required>
-            <i class='bx bx-lock'></i>
-        </div>
-        <div class="input-box">
-            <input type="password" name="password2" placeholder="Confirm Password" required>
-            <i class='bx bx-badge-check'></i>
-        </div>
-
-        <div class="login-link">
-            <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
-        </div>
-
-        <button type="submit" class="btn">Sign Up</button>
-    </form>
+<form class="wrapper" method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <h1 class="signup-heading">SIGN UP</h1>
+    {{ form.as_p }}
+    <div class="login-link">
+        <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+    </div>
+    <!-- Renders all fields of the form -->
+    <button type="submit" class="btn">SignUp</button>
+</form>
 
 </div>
 </body>
 </html>
 
-    

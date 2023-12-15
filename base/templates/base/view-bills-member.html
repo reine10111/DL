@@ -1,8 +1,8 @@
-{% extends "base/room_home.html" %}
+{% extends "base/base.html" %}
 
 {% block content %}
 
-<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+<div class="container-member d-flex align-items-center justify-content-center" style="min-height: 100vh;">
     <div class="text-center">
         <h1>{{ room_bills.title }}</h1>
         <p>Due: {{ room_bills.due }}</p>
@@ -13,7 +13,7 @@
         {% endif %}
     
         {% if role == "member" %}
-            <h2>Magbayad ka!</h2>
+            <h2>Submit your Proof</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}  
             

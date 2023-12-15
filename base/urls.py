@@ -7,6 +7,9 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('room/<str:room_id>/policy/', views.website_policy, name='website_policy'),
+
     path('services/', views.services, name='services'),
     path('aboutus/', views.aboutus, name='aboutus'),
     path('create/', views.create_room, name="create-room"),
@@ -28,34 +31,24 @@ urlpatterns = [
     path('room/<str:room_id>/update_task/<str:pk>', views.updateTask, name='updateTask'),
     path('room/<str:room_id>/delete/<str:pk>', views.deleteTask, name='delete'),
 
-    path('room/<str:room_id>/calendar/', views.calendar, name='calendar'),
-    path('room/<str:room_id>/calendar/all_events/', views.all_events, name='all_events'),
-    path('room/<str:room_id>/calendar/add_event/', views.add_event, name='add_event'),
-    path('room/<str:room_id>/calendar/update/', views.update, name='update'),
-    path('room/<str:room_id>/calendar/remove/', views.remove, name='remove'),
 
     path('room/<str:room_id>/members/', views.members, name='members'),
     path('room/<str:room_id>/profile/<int:user_id>/', views.profile_view, name='profile_view'),
 
     path('room/<str:room_id>/announcement/', views.announcement_detail, name='announcement'),
+    path('room/<str:room_id>/announcement/<int:announcement_id>/', views.announcement_view, name='announcement_view'),
+    path('room/<str:room_id>/announcement/<int:announcement_id>/create_comment/', views.create_comment, name='create_comment'),
+
+
     path('room/<str:room_id>/create_announcement/', views.create_announcement, name='create_announcement'),
-    path('room/<str:room_id>/announcement/<int:announcement_id>/comment/', views.create_comment, name='create_comment'),
     path('room/<str:room_id>/groupcontrib/', views.group_contrib_view, name='groupcontrib'),
     path('room/<str:room_id>/groupcontrib/new/', views.create_group_contrib, name='create_group_contrib'),
-    path('room/<str:room_id>/dashboard/', views.dashboard, name='dashboard')
-
-
-
-
-
-
-
+    path('room/<str:room_id>/dashboard/', views.dashboards, name='dashboard')
 
 
         
 
 ]
-
 
 #path('dashboard/<str:room_id>/', views.home, name='room-home')
 # path('room/<str:room_id>/bills/', views.view_member_bills, name='view-member-bills'),

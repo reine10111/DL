@@ -1,29 +1,31 @@
-{% extends "base/room_home.html" %}
+{% extends "base/base.html" %}
 
 {% block content %}
 
-<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+<div class="container-admin d-flex align-items-center justify-content-center" style="min-height: 100vh;">
     <div class="text-center">
-        <h1>{{ room_bills.title }}</h1>
-        <p>Due: {{ room_bills.due }}</p>
+        <h1 class="title">{{ room_bills.title }}</h1>
+        <p class="due">Due: {{ room_bills.due }}</p>
 
-        <div class="col-3">
-            <h3>Paid Members: </h3>
-            <ul>
-                {% for submission in submissions %}
-                    <li>
-                        <a href="proof/{{ submission.user.id }}" target="_blank">{{ submission.user.username }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="col-3">
-            <h3>Did not pay members: </h3>
-            <ul>
-                {% for user in did_not_submit %}
-                    <li>{{ user.username }}</li>
-                {% endfor %}
-            </ul>
+        <div class="columns d-flex justify-content-between">
+            <div class="col-4">
+                <h3>With Proof:</h3>
+                <ul>
+                    {% for submission in submissions %}
+                        <li>
+                            <a href="proof/{{ submission.user.id }}" target="_blank">{{ submission.user.username }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-4">
+                <h3>No Proof:</h3>
+                <ul>
+                    {% for user in did_not_submit %}
+                        <li>{{ user.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

@@ -1,8 +1,14 @@
-<h3>Update Task</h3>
+{% extends "base/base.html" %}
 
-<form method="POST" action="">
-    {% csrf_token %}
+{% block content %}
+  <div class="container-update d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <form method="POST" action="" class="custom-form">
+        {% csrf_token %}
 
-    {{form}}
-    <input type="submit" name="Update Task">
-</form>
+        <h3>Update Task</h3>
+
+        {{form}}
+        <button type="submit" class="btn btn-primary">Update Task</button>
+    </form>
+  </div>
+{% endblock %}

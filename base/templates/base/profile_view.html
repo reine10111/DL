@@ -1,6 +1,19 @@
 {% extends "base/base.html" %}
 
 {% block content %}
+<style>
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+     label {
+      color: white;
+    }
+
+    /* Additional styles as needed */
+  </style>
   <div class="container">
     <h1>User Profile for {{ room.name }}</h1>
 
@@ -8,7 +21,7 @@
       {% csrf_token %}
       <div class="form-group">
         {% if form.instance.profileimg %}
-          <img src="{{ form.instance.profileimg.url }}" alt="{{ form.instance.user.username }}'s Profile Image" class="img-thumbnail">
+          <img src="{{ form.instance.profileimg.url }}" alt="{{ form.instance.user.username }}'s Profile Image" class="profile-img">
         {% endif %}
         {{ form.profileimg.label_tag }}
         {{ form.profileimg }}

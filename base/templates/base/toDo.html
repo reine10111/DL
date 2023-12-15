@@ -1,31 +1,32 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-<div class="center-column">
-    <div class="text-center">
-        <h1>{{ room.title }}</h1>
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="text-center">
+    <h1>{{ room.title }}</h1>
 
-        <h3>To Do</h3>
+    <h3 style="color: white;">To Do</h3>
 
-        <form method="POST" action="{% url 'todolist' room_id=room.join_code %}" class="d-flex justify-content-center">
-        {% csrf_token %}
-        {{ form.title }}
-        <input class="btn btn-info" type="submit" name="Create Task">
-        </form>
+    <form method="POST" action="{% url 'todolist' room_id=room.join_code %}" class="d-flex justify-content-center mb-4">
+      {% csrf_token %}
+      {{ form.title }}
+      <input class="btn btn-info" type="submit" name="Create Task">
+    </form>
 
-        
-        {% for task in tasks %}
-        <div class="item-row"> 
-            <a class="btn btn-sm btn-info" href="{% url 'updateTask' room_id=room.join_code pk=task.id %}" class="btn btn-secondary">Update</a>
-            <a class="btn btn-sm btn-danger" href="{% url 'delete' room_id=room.join_code pk=task.id %}" class="btn btn-secondary">Delete</a>
+    <ul class="list-group">
+      {% for task in tasks %}
+      <li class="list-group-item">
+        <a class="btn btn-sm btn-info" href="{% url 'updateTask' room_id=room.join_code pk=task.id %}">Update</a>
+        <a class="btn btn-sm btn-danger" href="{% url 'delete' room_id=room.join_code pk=task.id %}">Delete</a>
 
-            {% if task.complete == True %}
-            <strike>{{ task.title }}</strike>
-            {% else %}
-            <span>{{ task.title }}</span>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
+        {% if task.complete == True %}
+        <strike>{{ task.title }}</strike>
+        {% else %}
+        <span>{{ task.title }}</span>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 {% endblock %}

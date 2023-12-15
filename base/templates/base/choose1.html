@@ -1,0 +1,17 @@
+{% extends "base/PAGWALA.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="dorm1.css">
+
+<a href="{% url 'create-room' %}">
+    <button type="button" class="btn btn-primary btn-lg">Create Room</button>&nbsp;
+</a>
+
+<a href="{% url 'join-room' %}">
+    <button type="button" class="btn btn-secondary btn-lg">Join Room</button>&nbsp;
+</a>
+
+
+
+
+{% endblock %}

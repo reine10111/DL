@@ -60,6 +60,10 @@ class Announcement(models.Model):
     def __str__(self):
         return f"{self.author.user.username}'s Announcement"
 
+    @classmethod
+    def recent_activities(cls, limit=10):
+        return cls.objects.order_by('-created_at')[:limit]
+
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     announcement = models.ForeignKey(Announcement, on_delete=models.CASCADE)
@@ -78,10 +82,10 @@ class bills(models.Model):
     assigned = models.DateField(auto_now=True)
     slug = models.SlugField(null=False, blank=False, default="")
 
-class Remark(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    bills = models.ForeignKey(bills, on_delete=models.CASCADE)
-    remarks = models.BooleanField(default=False)
+    @classmethod
+    def recent_activities(cls, limit=10):
+        return cls.objects.order_by('-created_at')[:limit]
+
 
 class Submission(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -100,13 +104,6 @@ class Task(models.Model):
         return self.title
 
 
-class Events(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, null=True, default= "")
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, null=True, blank=True)
-    start = models.DateTimeField(null=True, blank=True)
-    end = models.DateTimeField(null=True, blank=True)
-    
 
 class GroupContrib(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
@@ -117,6 +114,10 @@ class GroupContrib(models.Model):
     assigned = models.DateField(auto_now=True)
     slug = models.SlugField(null=False, blank=False, default="")
     selected_user_ids = models.ManyToManyField(User, related_name='selected_user_ids')
+
+    @classmethod
+    def recent_activities(cls, limit=10):
+        return cls.objects.order_by('-created_at')[:limit]
 
     def save(self, *args, **kwargs):
         if not self.id:

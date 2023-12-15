@@ -1,12 +1,11 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container-groupcontrib">
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-8"> <!-- Increased the column width for better readability -->
             <h1 class="text-center">{{ room.title }}</h1>
             <div class="form-group text-center">
-                <p>Room Code: <br><b>{{ room.join_code }}</b></p>
             </div>
             <a href="{% url 'create_group_contrib' room_id=room.join_code %}" class="btn btn-sm btn-info mb-3">Create New Group Contribution</a>
 

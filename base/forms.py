@@ -12,7 +12,7 @@ class CustomUserCreationForm(UserCreationForm):
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
-        exclude = ['user', 'profileimg']
+        exclude = ['user']
         fields = ['profileimg', 'bio', 'email', 'first_name', 'last_name']
 
 class AdminForm(forms.ModelForm):

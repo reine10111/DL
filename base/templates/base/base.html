@@ -45,20 +45,20 @@
         <h1>DORMLIFE</h1>
 
         <div class="join-botton" onclick="showJoinDorm()">
-            <i class="material-symbols-outlined">add</i>
-            <div class="text">Join Dorm</div>
         </div>
 
         <div class="profile-info">
             <img src="#" alt="Profile Avatar" id="profileImage">
-            <div class="text" id="profileText">Your Profile</div> <!-- Added ID -->
+            <div class="text" id="profileText">
+                {{ user.first_name }} {{ user.last_name }}
+                {{user.email}}</div> <!-- Added ID -->
         </div>
 
         <div class="sidebar" id="sidebar">
             <div class="menu">
                 <ul>
                     <li>
-                        <a href="#">
+                        <a href="{% url 'dashboard' room_id=room.join_code %}">
                             <i class="material-symbols-outlined">
                                 home_app_logo
                             </i> &nbsp;
@@ -96,27 +96,11 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
-                                    <i class="material-symbols-outlined">
-                                        quick_reference
-                                    </i> &nbsp;
-                                    <span>Due Dates</span>
-                                </a>
-                            </li>
-                            <li>
                                 <a href="{% url 'todolist' room_id=room.join_code %}">
                                     <i class="material-symbols-outlined">
                                         list
                                     </i> &nbsp;
                                     <span>To Do</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'calendar' room_id=room.join_code %}">
-                                    <i class="material-symbols-outlined">
-                                        calendar_month
-                                    </i> &nbsp;
-                                    <span>Calendar</span>
                                 </a>
                             </li>
                             <li>
@@ -128,17 +112,17 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{% url 'website_policy' room_id=room.join_code %}">
                                     <i class="material-symbols-outlined">
                                         policy
                                     </i> &nbsp;
-                                    <span>Dorm Policy</span>
+                                    <span>Website Policy</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{% url 'logout' %}">
                             <i class="material-symbols-outlined">
                                 logout
                             </i> &nbsp;
@@ -146,7 +130,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{% url 'aboutus' %}">
                             <i class="material-symbols-outlined">
                                 info
                             </i> &nbsp;

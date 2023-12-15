@@ -1,62 +1,241 @@
-<div class="sidebar">
-    <div class="side-bar-brand">
-        <h1><img src="../static/images/LOGO.png" alt="DormLife logo">DormLife</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dorm Life{% if room.name %} - {{ room.name }}{% endif %}</title>
+    
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/dorm1.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+
+    <!-- Link to Google Fonts (Poppins) -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Link to Bootstrap CSS (v5.3.2) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Link to Material Symbols Outlined font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Link to Bootstrap CSS (v4.3.1) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <i id="toggleSidebar" class="material-symbols-outlined custom-icon">
+            menu
+        </i>&nbsp;
+        <h1>DORMLIFE</h1>
+
+        <div class="join-botton" onclick="showJoinDorm()">
+            <i class="material-symbols-outlined">add</i>
+            <div class="text">Join Dorm</div>
+        </div>
+
+        <div class="profile-info">
+            <img src="#" alt="Profile Avatar" id="profileImage">
+            <div class="text" id="profileText">Your Profile</div> <!-- Added ID -->
+        </div>
+
+        <div class="sidebar" id="sidebar">
+            <div class="menu">
+                <ul>
+                    <li>
+                        <a href="#">
+                            <i class="material-symbols-outlined">
+                                home_app_logo
+                            </i> &nbsp;
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-parent main-button">
+                        <span class="nav-trigger main-button" onclick="toggleNav(event, 'groupFinances')">
+                            <i class="material-symbols-outlined">
+                                business
+                            </i> &nbsp;
+                            <span>Group Finances</span>
+                        </span>
+                        <ul id="groupFinances">
+                            <li><a href="{% url 'members' room_id=room.join_code %}">
+                                    <i class="material-symbols-outlined">
+                                        diversity_2
+                                    </i> &nbsp;
+                                    <span>Members</span>
+                                </a>
+                            </li>
+                            <li><a href="{% url 'groupcontrib' room_id=room.join_code %}">
+                                    <i class="material-symbols-outlined">
+                                        diversity_3
+                                    </i> &nbsp;
+                                    <span>Group Contributions</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'view-bills' room_id=room.join_code %}">
+                                    <i class="material-symbols-outlined">
+                                        receipt_long
+                                    </i> &nbsp;
+                                    <span>Bills</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="material-symbols-outlined">
+                                        quick_reference
+                                    </i> &nbsp;
+                                    <span>Due Dates</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'todolist' room_id=room.join_code %}">
+                                    <i class="material-symbols-outlined">
+                                        list
+                                    </i> &nbsp;
+                                    <span>To Do</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'calendar' room_id=room.join_code %}">
+                                    <i class="material-symbols-outlined">
+                                        calendar_month
+                                    </i> &nbsp;
+                                    <span>Calendar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'announcement' room_id=room.join_code %}">
+                                    <i class="material-symbols-outlined">
+                                        campaign
+                                    </i> &nbsp;
+                                    <span>Announcements</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="material-symbols-outlined">
+                                        policy
+                                    </i> &nbsp;
+                                    <span>Dorm Policy</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="material-symbols-outlined">
+                                logout
+                            </i> &nbsp;
+                            <span>Log Out</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="material-symbols-outlined">
+                                info
+                            </i> &nbsp;
+                            <span>About Us</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-  
-    <div class="sidebar-menu">
-        <ul>
-            <li>
-                <a href="{% url 'dashboard' room_id=room.join_code %}"><span class="material-symbols-outlined"> dashboard </span>
-                <span>Dashboard</span></a>
-            </li>
-  
-            <li>
-                <a href="#"><span class="material-symbols-outlined"> account_circle </span>    
-                <span>Profile</span></a>
-            </li>
-  
-            <li>
-                <a href="{% url 'members' room_id=room.join_code %}"><span class="material-symbols-outlined">groups</span>   
-                <span>Members</span></a>
-            </li>
-  
-            <li>
-                <a href="{% url 'todolist' room_id=room.join_code %}"><span class="material-symbols-outlined"> table_view </span> 
-                <span>To Do</span></a>
-            </li>
-  
-            <li>
-                <a href="{% url 'view-bills' room_id=room.join_code %}">
-                <span class="material-symbols-outlined">payments</span>
-                <span>Bills</span>
-                </a>
-            </li>
-  
-            <li>
-                <a href="{% url 'calendar' room_id=room.join_code %}"><span class="material-symbols-outlined"> today </span>   
-                <span>Calendar</span></a>
-            </li>
-  
-            <li>
-                <a href="#"><span class="material-symbols-outlined"> forum </span>   
-                <span>Messages</span></a>
-            </li>
-  
-            <li>
-                <a href="{% url 'announcement' room_id=room.join_code %}"><span class="material-symbols-outlined"> campaign </span> 
-                <span>Announcement</span></a>
-            </li>
-  
-            <li>
-                <a href="{% url 'groupcontrib' room_id=room.join_code %}"><span class="material-symbols-outlined"> settings </span>  
-                <span>Group Contribution</span></a>
-            </li>
-  
-            <li>
-                <a href=""><span class="material-symbols-outlined"> logout </span> 
-                <span>Sign Out</span></a>
-            </li>
-        </ul>
+
+
+    <div class="content3">
+      {% block content %}
+    {% endblock %}
+
     </div>
-  </div>
-  
+
+
+    <script>
+        function toggleNav(event, navId) {
+            var nav = document.getElementById(navId);
+            var mainButton = document.querySelector('.main-button');
+            var isSubButton = event.target.classList.contains('sub-button');
+
+            // Check if the clicked button is the "Group Finances" button
+            var isGroupFinancesButton = event.target.classList.contains('nav-trigger') && event.target.classList.contains('main-button');
+
+            mainButton.classList.toggle('active', !isSubButton);
+            mainButton.classList.toggle('hover', !isSubButton);
+
+            var subMenuItems = document.querySelectorAll('.nav-parent ul li');
+            subMenuItems.forEach(function(item) {
+                item.classList.toggle('active', !isSubButton && isGroupFinancesButton);
+            });
+
+            subMenuItems.forEach(function(item) {
+                item.classList.toggle('hover', !isSubButton && isGroupFinancesButton);
+            });
+
+            nav.style.display = nav.style.display === 'none' || nav.style.display === '' ? 'block' : 'none';
+        }
+
+        function showJoinDorm() {
+            var joinText = document.querySelector('.join-botton .text');
+            joinText.style.display = (joinText.style.display === 'none' || joinText.style.display === '') ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var profileImage = document.getElementById('profileImage');
+            var profileText = document.getElementById('profileText'); // Modified ID selection
+
+            profileImage.addEventListener('mouseover', function () {
+                profileText.style.display = 'block';
+            });
+
+            profileImage.addEventListener('mouseout', function () {
+                profileText.style.display = 'none';
+            });
+
+            var joinButton = document.querySelector('.join-botton');
+            var joinText = document.querySelector('.join-botton .text');
+
+            joinButton.addEventListener('mouseover', function () {
+                joinText.style.display = 'block';
+            });
+
+            joinButton.addEventListener('mouseout', function () {
+                joinText.style.display = 'none';
+            });
+
+            document.getElementById('toggleSidebar').addEventListener('click', function () {
+                var sidebar = document.getElementById('sidebar');
+                sidebar.style.display = (sidebar.style.display === 'none' || sidebar.style.display === '') ? 'flex' : 'none';
+            });
+        });
+    </script>
+
+
+
+    <!-- Bootstrap JS (v5.3.2) and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS (v4.3.1) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

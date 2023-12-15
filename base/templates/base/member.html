@@ -1,37 +1,82 @@
 {% extends "base/base.html" %}
 
 {% block content %}
-  <center>
-    <h2>Members and Admins in the Room</h2>
+<style>
 
-    <div style="display: flex; flex-direction: column; align-items: center;">
-      <div>
-        <h3>Admins:</h3>
-        <ul>
-          {% for admin in room.admin_set.all %}
-            <li>
-              <a href="{% url 'profile_view' room_id=room.join_code user_id=admin.user.id %}">
-                <img src="{{ admin.user.profileimg.url }}" alt="{{ admin.user.username }}'s Profile Image" class="img-thumbnail">
-                {{ admin.user.username }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
+  /* Change color for paragraphs */
+  p {
+    color: #fff;
+     /* You can use hex values for colors as well */
+  }
 
-      <div>
-        <h3>Members:</h3>
-        <ul>
-          {% for member in room.member_set.all %}
-            <li>
-              <a href="{% url 'profile_view' room_id=room.join_code user_id=member.user.id %}">
-                <img src="{{ member.user.profileimg.url }}" alt="{{ member.user.username }}'s Profile Image" class="img-thumbnail">
-                {{ member.user.username }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </center>
+  /* Change color for anchor tags */
+  a {
+    color: green;
+  }
+
+  /* Change color for h4 elements */
+  h4 {
+    color: #fff;
+  }
+
+
+
+
+  /* Change color for specific classes */
+  .admin {
+    color: purple;
+  }
+
+  .member {
+    color: #FFA500; /* Change to your desired color */
+  }
+</style>
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+  <div style="max-width: 1000px; padding: 20px;">
+    <h1>{{ room.title }}</h1>
+    <p>Room Code: <br><b>{{ room.join_code }}</b></p>
+    <table class="table" style="margin: auto;">
+      <thead>
+        <tr>
+          <th scope="col">Members</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for admin in room.admin_set.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="user-cell admin">
+              <div class="profile-info">
+                {% if admin.profileimg %}
+                  <img src="{{ admin.profileimg.url }}" alt="Profile Image">
+                {% endif %}
+                <a href="{% url 'profile_view' room_id=room.join_code user_id=admin.user.id %}">
+                  <p>{{ admin.user.username }}</p>
+                  <h4>Admin</h4>
+                </a>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+        {% for member in room.member_set.all %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="user-cell member">
+              <div class="profile-info">
+                {% if member.profileimg %}
+                  <img src="{{ member.profileimg.url }}" alt="Profile Image">
+                {% endif %}
+                <a href="{% url 'profile_view' room_id=room.join_code user_id=member.user.id %}">
+                  <p>{{ member.user.username }}</p>
+                  <h4>Member</h4>
+                </a>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 {% endblock %}
